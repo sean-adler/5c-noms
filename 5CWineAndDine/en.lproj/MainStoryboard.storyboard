@@ -7,7 +7,7 @@
         <!--Main Table View Controller-->
         <scene sceneID="s7l-tB-Dir">
             <objects>
-                <tableViewController id="q4E-Az-Nj2" customClass="MainTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="leftViewController" id="q4E-Az-Nj2" customClass="MainTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B4p-fe-fAA">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -50,13 +50,14 @@
         <!--Detail View Controller-->
         <scene sceneID="0LF-QY-oYj">
             <objects>
-                <tableViewController id="EMk-lm-8iN" customClass="DetailViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="centerViewController" id="EMk-lm-8iN" customClass="DetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dks-FQ-C6y">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92153532608695654" green="0.92153532608695654" blue="0.92153532608695654" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="separatorColor" red="0.84782608699999995" green="0.84782608699999995" blue="0.84782608699999995" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MealCell" id="H07-N9-KPP">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MealCell" id="H07-N9-KPP">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">

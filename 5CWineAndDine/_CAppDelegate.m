@@ -8,11 +8,20 @@
 
 #import "_CAppDelegate.h"
 
+#import "JASidePanelController.h"
+#import "DetailViewController.h"
+#import "MainTableViewController.h"
+
 @implementation _CAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    
+//    self.viewController = [[JASidePanelController alloc] init];
+//    self.viewController.leftPanel = [[]
     return YES;
 }
 							

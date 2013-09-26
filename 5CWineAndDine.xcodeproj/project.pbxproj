@@ -19,6 +19,11 @@
 		72D8C14917E56063004787B7 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72D8C14717E56063004787B7 /* MainStoryboard.storyboard */; };
 		72D8C15417E5618B004787B7 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72D8C15317E5618B004787B7 /* MainTableViewController.m */; };
 		72D8C15717E56E05004787B7 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72D8C15617E56E05004787B7 /* DetailViewController.m */; };
+		72E4702E17F3879000ECD462 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E4702D17F3879000ECD462 /* JASidePanelController.m */; };
+		72E4703017F387B400ECD462 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72E4702F17F387B400ECD462 /* QuartzCore.framework */; };
+		72E4703317F3891900ECD462 /* SidePanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E4703217F3891800ECD462 /* SidePanelViewController.m */; };
+		72E4703617F38A3300ECD462 /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E4703517F38A3200ECD462 /* UIViewController+JASidePanel.m */; };
+		72E4703917F3937100ECD462 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E4703817F3937100ECD462 /* ECSlidingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +45,15 @@
 		72D8C15317E5618B004787B7 /* MainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTableViewController.m; sourceTree = "<group>"; };
 		72D8C15517E56E05004787B7 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		72D8C15617E56E05004787B7 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		72E4702C17F3879000ECD462 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
+		72E4702D17F3879000ECD462 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
+		72E4702F17F387B400ECD462 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		72E4703117F3891800ECD462 /* SidePanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidePanelViewController.h; sourceTree = "<group>"; };
+		72E4703217F3891800ECD462 /* SidePanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidePanelViewController.m; sourceTree = "<group>"; };
+		72E4703417F38A3200ECD462 /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
+		72E4703517F38A3200ECD462 /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
+		72E4703717F3937100ECD462 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
+		72E4703817F3937100ECD462 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72E4703017F387B400ECD462 /* QuartzCore.framework in Frameworks */,
 				72D8C13017E56063004787B7 /* UIKit.framework in Frameworks */,
 				72D8C13217E56063004787B7 /* Foundation.framework in Frameworks */,
 				72D8C13417E56063004787B7 /* CoreGraphics.framework in Frameworks */,
@@ -59,6 +74,7 @@
 		72D8C12317E56063004787B7 = {
 			isa = PBXGroup;
 			children = (
+				72E4702F17F387B400ECD462 /* QuartzCore.framework */,
 				72D8C13517E56063004787B7 /* 5CWineAndDine */,
 				72D8C12E17E56063004787B7 /* Frameworks */,
 				72D8C12D17E56063004787B7 /* Products */,
@@ -86,11 +102,19 @@
 		72D8C13517E56063004787B7 /* 5CWineAndDine */ = {
 			isa = PBXGroup;
 			children = (
+				72E4703717F3937100ECD462 /* ECSlidingViewController.h */,
+				72E4703817F3937100ECD462 /* ECSlidingViewController.m */,
+				72E4703417F38A3200ECD462 /* UIViewController+JASidePanel.h */,
+				72E4703517F38A3200ECD462 /* UIViewController+JASidePanel.m */,
+				72E4702C17F3879000ECD462 /* JASidePanelController.h */,
+				72E4702D17F3879000ECD462 /* JASidePanelController.m */,
 				72D8C13E17E56063004787B7 /* _CAppDelegate.h */,
 				72D8C13F17E56063004787B7 /* _CAppDelegate.m */,
 				72D8C14717E56063004787B7 /* MainStoryboard.storyboard */,
 				72D8C15517E56E05004787B7 /* DetailViewController.h */,
 				72D8C15617E56E05004787B7 /* DetailViewController.m */,
+				72E4703117F3891800ECD462 /* SidePanelViewController.h */,
+				72E4703217F3891800ECD462 /* SidePanelViewController.m */,
 				72D8C15217E5618B004787B7 /* MainTableViewController.h */,
 				72D8C15317E5618B004787B7 /* MainTableViewController.m */,
 				72D8C13617E56063004787B7 /* Supporting Files */,
@@ -183,6 +207,10 @@
 				72D8C14017E56063004787B7 /* _CAppDelegate.m in Sources */,
 				72D8C15417E5618B004787B7 /* MainTableViewController.m in Sources */,
 				72D8C15717E56E05004787B7 /* DetailViewController.m in Sources */,
+				72E4702E17F3879000ECD462 /* JASidePanelController.m in Sources */,
+				72E4703317F3891900ECD462 /* SidePanelViewController.m in Sources */,
+				72E4703617F38A3300ECD462 /* UIViewController+JASidePanel.m in Sources */,
+				72E4703917F3937100ECD462 /* ECSlidingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +333,7 @@
 				72D8C15117E56063004787B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

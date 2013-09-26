@@ -8,7 +8,12 @@
 
 #import "DetailViewController.h"
 
+#define FONT_SIZE 12.0
+
 @interface DetailViewController ()
+
+@property (nonatomic, strong) NSArray *mealTitles;
+@property (nonatomic, strong) NSArray *meals;
 
 @end
 
@@ -34,7 +39,13 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSLog(@"mealData: %@", self.mealData);
+    self.navigationItem.title = self.diningHallTitle;
+    
+    if (!self.weekdayString) {
+        self.weekdayString = @"Monday";
+    }
+    self.navigationItem.title = @"Monday";
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,13 +59,35 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return self.dayMeals.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.mealData.count;
+    NSArray *meals = [[self.dayMeals objectAtIndex:section] allValues][0];
+    //    NSString *mealString = self.dayMeals[indexPath.section][1][indexPath.row];
+    
+    return meals.count;
+    
+//    return self.mealData.count;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+    if (sectionTitle == nil) {
+        return nil;
+    }
+    
+    UILabel *label = [[UILabel alloc] init];
+    
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [[[self.dayMeals objectAtIndex:section] allKeys][0] capitalizedString];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,11 +95,35 @@
     static NSString *CellIdentifier = @"MealCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    NSArray *meals = [[self.dayMeals objectAtIndex:indexPath.section] allValues][0];
+    //    NSString *mealString = self.dayMeals[indexPath.section][1][indexPath.row];
+    NSString *mealString = [meals objectAtIndex:indexPath.row];
+    
     // Configure the cell...
     
-    cell.textLabel.text = self.mealData[indexPath.row];
+    // Make long meal strings wrap around
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:FONT_SIZE];
+    cell.textLabel.text = mealString;
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    
+    // Configure header label
+    cell.detailTextLabel.text = @"awesome";
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *meals = [[self.dayMeals objectAtIndex:indexPath.section] allValues][0];
+//    NSString *mealString = self.dayMeals[indexPath.section][1][indexPath.row];
+    NSString *mealString = [meals objectAtIndex:indexPath.row];
+    CGSize stringSize = [mealString sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:FONT_SIZE]
+                               constrainedToSize:CGSizeMake(320, 9999)
+                                   lineBreakMode:NSLineBreakByWordWrapping];
+    return stringSize.height + 25;
 }
 
 /*

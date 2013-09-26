@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailViewController : UITableViewController
-@property (nonatomic, strong) NSArray *mealData;
+
+//@property (nonatomic, strong) NSArray *mealData;
+@property (nonatomic, strong) NSArray *dayMeals;
+@property (nonatomic, strong) NSString *diningHallTitle;
+@property (nonatomic, strong) NSString *currentMeal;
+@property (nonatomic, strong) NSString *weekdayString;
+
 @end

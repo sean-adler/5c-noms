@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSDictionary *mealData;
 @property (nonatomic) long weekday;
 @property (nonatomic) long hour;
+@property (nonatomic, strong) NSString *currentMeal;
+@property (nonatomic, strong) NSString *weekdayString;
 
 @end
 
@@ -35,6 +37,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationItem.title = @"5C Noms";
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -43,9 +47,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     NSURL *url = [NSURL URLWithString:API_URL];
     NSData *data = [NSData dataWithContentsOfURL:url];
-    self.mealData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-    NSLog(@"%@", self.mealData);
-    
+    self.mealData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];    
     
     // Find current weekday and hour.
     unsigned units = NSWeekdayCalendarUnit | NSHourCalendarUnit;
@@ -53,7 +55,6 @@
     NSDateComponents *components = [calendar components:units fromDate:[NSDate date]];
     self.weekday = (long)components.weekday;
     self.hour = (long)components.hour;
-    NSLog(@"day: %ld, hour: %ld", (long)components.weekday, (long)components.hour);
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,7 +84,6 @@
     
     cell.textLabel.text = [[[self.mealData allKeys] objectAtIndex:indexPath.row] capitalizedString];
     // Configure the cell...
-    
     
     return cell;
 }
@@ -135,31 +135,31 @@
     
     switch (day) {
         case 1:
-            dayString = @"sunday";
+            dayString = @"sun";
             break;
         case 2:
-            dayString = @"monday";
+            dayString = @"mon";
             break;
         case 3:
-            dayString = @"tuesday";
+            dayString = @"tue";
             break;
         case 4:
-            dayString = @"wednesday";
+            dayString = @"wed";
             break;
         case 5:
-            dayString = @"thursday";
+            dayString = @"thu";
             break;
         case 6:
-            dayString = @"friday";
+            dayString = @"fri";
             break;
         case 7:
-            dayString = @"saturday";
+            dayString = @"sat";
             break;
         default:
             break;
     }
     
-    if ([dayString isEqualToString:@"saturday"] || [dayString isEqualToString:@"sunday"]) {
+    if ([dayString isEqualToString:@"sat"] || [dayString isEqualToString:@"sun"]) {
         if (hour < 14) mealString = @"brunch";
         else mealString = @"dinner";
         
@@ -171,7 +171,17 @@
     
     // only CMC has snack
     
-    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", dayString, mealString];
+    // Line of code below was for when we passed only the current meal's data.
+//    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", dayString, mealString];
+    
+    
+    // Now we pass everything for the current day.
+    NSString *keyPath = [NSString stringWithFormat:@"%@", dayString];
+    
+    // Save mealString and dayString and pass later to detail view
+    self.currentMeal = mealString;
+    self.weekdayString = dayString;
+    
 //    NSArray *array = [self.mealData valueForKeyPath:keyPath];
     NSLog(@"keyPath: %@", keyPath);
         
@@ -188,15 +198,40 @@
     if ([[segue identifier] isEqualToString:@"pushToDetail"]) {
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSString *rowTitle = [[self.mealData allKeys] objectAtIndex:indexPath.row];
+        NSString *diningHall = [[self.mealData allKeys] objectAtIndex:indexPath.row];
         NSString *keyPath = [NSString stringWithFormat:@"%@.%@",
-                             rowTitle, [self keyPathForDay:self.weekday andHour:self.hour]];
+                             diningHall, [self keyPathForDay:self.weekday andHour:self.hour]];
         
-        NSArray *mealData = [self.mealData valueForKeyPath:keyPath];
+        NSLog(@"keyPath: %@", keyPath);
+        
+        NSDictionary *dayMealsDict = [self.mealData valueForKeyPath:keyPath];
+        NSArray *dayMealsDictKeys = [dayMealsDict allKeys];
+        
+        NSMutableArray *dayMeals = [[NSMutableArray alloc] initWithCapacity:dayMealsDict.count];
+        
+            if ([dayMealsDictKeys containsObject:@"brunch"]) {
+                [dayMeals addObject:@{@"brunch": dayMealsDict[@"brunch"]}];
+            }
+            if ([dayMealsDictKeys containsObject:@"breakfast"]) {
+                [dayMeals addObject:@{@"breakfast": dayMealsDict[@"breakfast"]}];
+            }
+            if ([dayMealsDictKeys containsObject:@"lunch"]) {
+                [dayMeals addObject:@{@"lunch": dayMealsDict[@"lunch"]}];
+            }
+            if ([dayMealsDictKeys containsObject:@"dinner"]) {
+                [dayMeals addObject:@{@"dinner": dayMealsDict[@"dinner"]}];
+            }
+        
+        NSLog(@"Day Meals Dict: %@", dayMealsDict);
+        NSLog(@"Day Meals: %@", dayMeals);
+        NSLog(@"Day Meals first obj: %@", dayMeals[0]);
 //        NSLog(@"mealData: %@", mealData);
         
         
-        [detailVC setMealData:mealData];
+        [detailVC setWeekdayString:self.weekdayString];
+        [detailVC setCurrentMeal:self.currentMeal];
+        [detailVC setDayMeals:dayMeals];
+        [detailVC setDiningHallTitle:[diningHall capitalizedString]];
 //        NSArray *mealz = [self mealDataForDay:self.weekday andHour:self.hour];
 //        NSLog(@"meals: %@", mealz);
 //        NSLog(@"detailVC's mealData: %@", detailVC.mealData);
@@ -211,8 +246,8 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
 //    NSLog(@"indexPath: %@", indexPath);
 //    
 //    NSString *className = NSStringFromClass([DetailViewController class]);
@@ -229,6 +264,6 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-}
+//}
 
 @end
