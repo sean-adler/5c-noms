@@ -8,13 +8,17 @@
 
 #import "MainTableViewController.h"
 #import "DetailViewController.h"
+#import "SWRevealViewController.h"
 
 
-#define API_URL @"http://dining-api.herokuapp.com/all"
+#define DH_API_URL @"http://dining-api.herokuapp.com/all"
+#define DH_FONT_SIZE 18.0
+
+// defined in this file for ease of setDetailVC method below.
+#define DETAIL_VIEW_CONTROLLER ((DetailViewController *)[(UINavigationController *)self.revealViewController.frontViewController viewControllers][0])
 
 @interface MainTableViewController ()
 
-@property (nonatomic, strong) NSDictionary *mealData;
 @property (nonatomic) long weekday;
 @property (nonatomic) long hour;
 @property (nonatomic, strong) NSString *currentMeal;
@@ -29,7 +33,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // other init stuff here
+
     }
     return self;
 }
@@ -38,23 +42,58 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"5C Noms";
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSURL *url = [NSURL URLWithString:API_URL];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    self.mealData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];    
     
-    // Find current weekday and hour.
+    NSURL *url = [NSURL URLWithString:DH_API_URL];
+    
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] init];
+    spinner.color = [UIColor grayColor];
+    CGAffineTransform transform = CGAffineTransformMakeScale(1.3f, 1.3f);
+    spinner.transform = transform;
+    
+    spinner.frame = CGRectMake(10,10,300,300);
+    [DETAIL_VIEW_CONTROLLER.tableView addSubview:spinner];
+    [spinner startAnimating];
+    
+    dispatch_queue_t getMealsQ = dispatch_queue_create("get meals from API", NULL);
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    
+    dispatch_async(getMealsQ, ^{
+        // Async thread that loads data from API
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Get back to main (UI) thread to finagle "loading" UI properties
+            [self setPropertiesFromJsonData:data];
+            [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
+            [spinner stopAnimating];
+            [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            DETAIL_VIEW_CONTROLLER.navigationItem.title = @"← Pick a Dining Hall";
+        });
+    });
+}
+
+- (void)setPropertiesFromJsonData:(NSData *)data
+{
+    self.mealData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     unsigned units = NSWeekdayCalendarUnit | NSHourCalendarUnit;
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [calendar components:units fromDate:[NSDate date]];
     self.weekday = (long)components.weekday;
     self.hour = (long)components.hour;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,11 +118,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"DiningHallCell";
+    static NSString *CellIdentifier = @"DiningHallTVC";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = [[[self.mealData allKeys] objectAtIndex:indexPath.row] capitalizedString];
-    // Configure the cell...
+    
+    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:DH_FONT_SIZE];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
     
     return cell;
 }
@@ -169,12 +211,6 @@
         else mealString = @"dinner";
     }
     
-    // only CMC has snack
-    
-    // Line of code below was for when we passed only the current meal's data.
-//    NSString *keyPath = [NSString stringWithFormat:@"%@.%@", dayString, mealString];
-    
-    
     // Now we pass everything for the current day.
     NSString *keyPath = [NSString stringWithFormat:@"%@", dayString];
     
@@ -182,9 +218,6 @@
     self.currentMeal = mealString;
     self.weekdayString = dayString;
     
-//    NSArray *array = [self.mealData valueForKeyPath:keyPath];
-    NSLog(@"keyPath: %@", keyPath);
-        
     return keyPath;
 }
 
@@ -195,7 +228,7 @@
 {
     DetailViewController *detailVC = segue.destinationViewController;
     
-    if ([[segue identifier] isEqualToString:@"pushToDetail"]) {
+    if ([[segue identifier] isEqualToString:@"showMenu"]) {
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSString *diningHall = [[self.mealData allKeys] objectAtIndex:indexPath.row];
@@ -232,17 +265,17 @@
         [detailVC setCurrentMeal:self.currentMeal];
         [detailVC setDayMeals:dayMeals];
         [detailVC setDiningHallTitle:[diningHall capitalizedString]];
-//        NSArray *mealz = [self mealDataForDay:self.weekday andHour:self.hour];
-//        NSLog(@"meals: %@", mealz);
-//        NSLog(@"detailVC's mealData: %@", detailVC.mealData);
     }
     
-//    NSString *className = NSStringFromClass([DetailViewController class]);
-//    DetailViewController *detailVC = [[DetailViewController alloc] initWithNibName:className bundle:nil];
-//    
-//    
-//    detailVC.mealData = [self mealDataForDay:self.weekday andHour:self.hour];
-//    [self.navigationController pushViewController:detailVC animated:YES];
+        if ([segue isKindOfClass:[SWRevealViewControllerSegue class]]) {
+            SWRevealViewControllerSegue *swSegue = (SWRevealViewControllerSegue *)segue;
+            
+            swSegue.performBlock = ^(SWRevealViewControllerSegue *rvc_segue, UIViewController *svc, UIViewController *dvc) {
+                UINavigationController *navController = (UINavigationController *)self.revealViewController.frontViewController;
+                [navController setViewControllers:@[dvc] animated:NO];
+                [self.revealViewController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+            };
+        }
 }
 
 

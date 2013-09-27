@@ -7,8 +7,12 @@
 //
 
 #import "DetailViewController.h"
+//#import "HeaderView.h"
+#import "SWRevealViewController.h"
+#import "MainTableViewController.h"
 
-#define FONT_SIZE 12.0
+#define FONT_SIZE 16.0
+#define MAIN_TVC ((MainTableViewController *)self.revealViewController.rearViewController)
 
 @interface DetailViewController ()
 
@@ -30,6 +34,15 @@
 }
 
 
+- (NSString *)diningHallTitle
+{
+    if (!_diningHallTitle) {
+        _diningHallTitle = @"Loading...";
+    }
+    return _diningHallTitle;
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -39,12 +52,18 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.navigationItem.title = self.diningHallTitle;
     
-    if (!self.weekdayString) {
-        self.weekdayString = @"Monday";
-    }
-    self.navigationItem.title = @"Monday";
+    self.navigationItem.title = self.diningHallTitle;
+    NSDictionary *navbarTitleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               [UIColor blackColor], UITextAttributeTextColor,
+                                               [UIFont fontWithName:@"HelveticaNeue-Light" size:FONT_SIZE+4.0], UITextAttributeFont, nil];
+    self.navigationController.navigationBar.titleTextAttributes = navbarTitleTextAttributes;
+    
+    _sidebarButton.tintColor = [UIColor colorWithWhite:0.96f alpha:0.2f];
+    _sidebarButton.target = self.revealViewController;
+    _sidebarButton.action = @selector(revealToggle:);
+    
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     
 }
 
@@ -66,23 +85,25 @@
 {
     // Return the number of rows in the section.
     NSArray *meals = [[self.dayMeals objectAtIndex:section] allValues][0];
-    //    NSString *mealString = self.dayMeals[indexPath.section][1][indexPath.row];
     
     return meals.count;
-    
-//    return self.mealData.count;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
-    if (sectionTitle == nil) {
-        return nil;
-    }
-    
-    UILabel *label = [[UILabel alloc] init];
-    
-}
+
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
+//    if (sectionTitle == nil) {
+//        return nil;
+//    }
+//    
+//    UIView *headerView = [[HeaderView alloc] init];
+//    headerView.leftLabel.text = //...
+//    headerView.rightLabel.text = //...
+//    return headerView;
+//    
+//}
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -110,7 +131,7 @@
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     
     // Configure header label
-    cell.detailTextLabel.text = @"awesome";
+//    cell.detailTextLabel.text = @"awesome";
     
     return cell;
 }

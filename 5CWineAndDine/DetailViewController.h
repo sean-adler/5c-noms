@@ -15,5 +15,7 @@
 @property (nonatomic, strong) NSString *diningHallTitle;
 @property (nonatomic, strong) NSString *currentMeal;
 @property (nonatomic, strong) NSString *weekdayString;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @end
