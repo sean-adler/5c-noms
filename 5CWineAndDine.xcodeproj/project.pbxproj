@@ -297,6 +297,7 @@
 				GCC_PREFIX_HEADER = "5CWineAndDine/5CWineAndDine-Prefix.pch";
 				INFOPLIST_FILE = "5CWineAndDine/5CWineAndDine-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -308,6 +309,7 @@
 				GCC_PREFIX_HEADER = "5CWineAndDine/5CWineAndDine-Prefix.pch";
 				INFOPLIST_FILE = "5CWineAndDine/5CWineAndDine-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

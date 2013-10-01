@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>02BBADCA-18C8-47B2-A994-F012DCF4AECA</string>
+	<key>IDESourceControlProjectName</key>
+	<string>5CWineAndDine</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FE1B97B0-B60D-417A-8544-FC12F28E55BD</key>
+		<string>https://bitbucket.org/sadler/5cnoms..git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>5CWineAndDine.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FE1B97B0-B60D-417A-8544-FC12F28E55BD</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/sadler/5cnoms..git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FE1B97B0-B60D-417A-8544-FC12F28E55BD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FE1B97B0-B60D-417A-8544-FC12F28E55BD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>5CWineAndDine</string>
+		</dict>
+	</array>
+</dict>
+</plist>
